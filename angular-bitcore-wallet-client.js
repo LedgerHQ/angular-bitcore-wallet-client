@@ -541,7 +541,7 @@ API.prototype.isPrivKeyExternal = function() {
  * @return {String}
  */
 API.prototype.getPrivKeyExternalSourceName = function() {
-  return this.credentials ? this.getExternalSourceName() : null;
+  return this.credentials ? this.credentials.getExternalSourceName() : null;
 };
 
 /**
@@ -97048,8 +97048,8 @@ module.exports={
   "readmeFilename": "README.md",
   "homepage": "https://github.com/bitpay/bitcore-wallet-client",
   "_id": "bitcore-wallet-client@0.0.40",
-  "_shasum": "d49d34f6a2f039c8f8f52abe9c3f9a56b5183b50",
-  "_resolved": "git://github.com/LedgerHQ/bitcore-wallet-client.git#37587377bd2298a628f68eaccb8693056c26fdba",
+  "_shasum": "d05d7b7f5a530f736a87ac0a47c229f4f1a840a1",
+  "_resolved": "git://github.com/LedgerHQ/bitcore-wallet-client.git#98fb4cad2cd95d2de9e29dde6fbced8f354bf4dd",
   "_from": "git://github.com/LedgerHQ/bitcore-wallet-client.git#external-hw",
   "_fromGithub": true
 }
