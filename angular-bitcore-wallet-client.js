@@ -527,6 +527,24 @@ API.prototype.hasPrivKeyEncrypted = function() {
 };
 
 /**
+ * Is private key external?
+ *
+ * @return {Boolean}
+ */
+API.prototype.isPrivKeyExternal = function() {
+  return this.credentials && this.credentials.isExternal();
+};
+
+/**
+ * Get external wallet source name
+ *
+ * @return {String}
+ */
+API.prototype.getPrivKeyExternalSourceName = function() {
+  return this.credentials ? this.getExternalSourceName() : null;
+};
+
+/**
  * unlocks the private key. `lock` need to be called explicity
  * later to remove the unencrypted private key.
  *
@@ -1652,6 +1670,14 @@ Credentials.prototype.isComplete = function() {
   if (!this.m || !this.n) return false;
   if (!this.publicKeyRing || this.publicKeyRing.length != this.n) return false;
   return true;
+};
+
+Credentials.prototype.isExternal = function() {
+  return (typeof this.external == "string");
+};
+
+Credentials.prototype.getExternalSourceName = function() {
+  return this.external;
 };
 
 Credentials.prototype.hasTemporaryRequestKeys = function() {
@@ -97022,8 +97048,8 @@ module.exports={
   "readmeFilename": "README.md",
   "homepage": "https://github.com/bitpay/bitcore-wallet-client",
   "_id": "bitcore-wallet-client@0.0.40",
-  "_shasum": "abee1f0d5be7f4bb92075b514cce9efd7f892dcf",
-  "_resolved": "git://github.com/LedgerHQ/bitcore-wallet-client.git#ab345fce4a2f56c4e9954752f4e70bffa7c1a652",
+  "_shasum": "d49d34f6a2f039c8f8f52abe9c3f9a56b5183b50",
+  "_resolved": "git://github.com/LedgerHQ/bitcore-wallet-client.git#37587377bd2298a628f68eaccb8693056c26fdba",
   "_from": "git://github.com/LedgerHQ/bitcore-wallet-client.git#external-hw",
   "_fromGithub": true
 }
