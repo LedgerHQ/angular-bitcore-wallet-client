@@ -300,9 +300,10 @@ API.prototype.seedFromExtendedPrivateKey = function(xPrivKey) {
  *
  * @param {String} xPubKey - Extended public key
  * @param {String} source - name of external wallet source (ex: ledger)
+ * @params{Number} index - index of the external key
  */
-API.prototype.seedFromExternalWalletPublicKey = function(xPubKey, source) {
-  this.credentials = Credentials.fromExternalWalletPublicKey(xPubKey, source);
+API.prototype.seedFromExternalWalletPublicKey = function(xPubKey, source, index) {
+  this.credentials = Credentials.fromExternalWalletPublicKey(xPubKey, source, index);
 }
 
 
@@ -532,7 +533,7 @@ API.prototype.hasPrivKeyEncrypted = function() {
  * @return {Boolean}
  */
 API.prototype.isPrivKeyExternal = function() {
-  return this.credentials && this.credentials.isExternal();
+  return this.credentials && this.credentials.hasExternalSource();
 };
 
 /**
@@ -542,6 +543,15 @@ API.prototype.isPrivKeyExternal = function() {
  */
 API.prototype.getPrivKeyExternalSourceName = function() {
   return this.credentials ? this.credentials.getExternalSourceName() : null;
+};
+
+/**
+ * Get external wallet key index
+ *
+ * @return {Number}
+ */
+API.prototype.getExternalIndex = function() {
+  return this.credentials ? this.credentials.getExternalIndex() : null;
 };
 
 /**
@@ -1480,7 +1490,8 @@ var FIELDS = [
   'personalEncryptingKey',
   'sharedEncryptingKey',
   'copayerName',
-  'external',
+  'externalSource',
+  'externalIndex'
 ];
 
 var EXPORTABLE_FIELDS = [
@@ -1492,7 +1503,8 @@ var EXPORTABLE_FIELDS = [
   'n',
   'publicKeyRing',
   'sharedEncryptingKey',
-  'external'
+  'externalSource',
+  'externalIndex'
 ];
 
 function Credentials() {
@@ -1515,10 +1527,11 @@ Credentials.fromExtendedPrivateKey = function(xPrivKey) {
   return x;
 };
 
-Credentials.fromExternalWalletPublicKey = function(xPubKey, source) {
+Credentials.fromExternalWalletPublicKey = function(xPubKey, source, index) {
   var x = new Credentials();
   x.xPubKey = xPubKey;
-  x.external = source;
+  x.externalSource = source;
+  x.externalIndex = index;
   x._expand();
   return x;
 };
@@ -1537,7 +1550,7 @@ Credentials.prototype._expand = function() {
     this.requestPubKey = requestDerivation.publicKey.toString();
   }
   var network = WalletUtils.getNetworkFromXPubKey(this.xPubKey);
-  if (typeof this.external == "string") {
+  if (typeof this.externalSource == "string") {
     var xPrivKey = new Bitcore.HDPrivateKey(network);
     var requestDerivation = xPrivKey.derive(WalletUtils.PATHS.REQUEST_KEY);
     this.requestPrivKey = requestDerivation.privateKey.toString();
@@ -1672,12 +1685,16 @@ Credentials.prototype.isComplete = function() {
   return true;
 };
 
-Credentials.prototype.isExternal = function() {
-  return (typeof this.external == "string");
+Credentials.prototype.hasExternalSource = function() {
+  return (typeof this.externalSource == "string");
 };
 
 Credentials.prototype.getExternalSourceName = function() {
-  return this.external;
+  return this.externalSource;
+};
+
+Credentials.prototype.getExternalIndex = function() {
+  return this.externalIndex;
 };
 
 Credentials.prototype.hasTemporaryRequestKeys = function() {
@@ -97048,8 +97065,8 @@ module.exports={
   "readmeFilename": "README.md",
   "homepage": "https://github.com/bitpay/bitcore-wallet-client",
   "_id": "bitcore-wallet-client@0.0.40",
-  "_shasum": "d05d7b7f5a530f736a87ac0a47c229f4f1a840a1",
-  "_resolved": "git://github.com/LedgerHQ/bitcore-wallet-client.git#98fb4cad2cd95d2de9e29dde6fbced8f354bf4dd",
+  "_shasum": "11bf29e12f39ce9d3378f3a19214955e1037d569",
+  "_resolved": "git://github.com/LedgerHQ/bitcore-wallet-client.git#fc44ab63524aceae2828b6f579a32045faba31d3",
   "_from": "git://github.com/LedgerHQ/bitcore-wallet-client.git#external-hw",
   "_fromGithub": true
 }
