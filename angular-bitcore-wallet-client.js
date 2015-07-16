@@ -295,8 +295,14 @@ API.prototype.seedFromExtendedPrivateKey = function(xPrivKey) {
   this.credentials = Credentials.fromExtendedPrivateKey(xPrivKey);
 };
 
-API.prototype.seedFromExternalWalletPublicKey = function(xPubKey) {
-  this.credentials = Credentials.fromExternalWalletPublicKey(xPubKey);
+/**
+ * Seed from external wallet public key
+ *
+ * @param {String} xPubKey - Extended public key
+ * @param {String} source - name of external wallet source (ex: ledger)
+ */
+API.prototype.seedFromExternalWalletPublicKey = function(xPubKey, source) {
+  this.credentials = Credentials.fromExternalWalletPublicKey(xPubKey, source);
 }
 
 
@@ -1491,10 +1497,10 @@ Credentials.fromExtendedPrivateKey = function(xPrivKey) {
   return x;
 };
 
-Credentials.fromExternalWalletPublicKey = function(xPubKey) {
+Credentials.fromExternalWalletPublicKey = function(xPubKey, source) {
   var x = new Credentials();
   x.xPubKey = xPubKey;
-  x.external = true;
+  x.external = source;
   x._expand();
   return x;
 };
@@ -1513,7 +1519,7 @@ Credentials.prototype._expand = function() {
     this.requestPubKey = requestDerivation.publicKey.toString();
   }
   var network = WalletUtils.getNetworkFromXPubKey(this.xPubKey);
-  if (this.external) {
+  if (typeof this.external == "string") {
     var xPrivKey = new Bitcore.HDPrivateKey(network);
     var requestDerivation = xPrivKey.derive(WalletUtils.PATHS.REQUEST_KEY);
     this.requestPrivKey = requestDerivation.privateKey.toString();
@@ -97016,8 +97022,8 @@ module.exports={
   "readmeFilename": "README.md",
   "homepage": "https://github.com/bitpay/bitcore-wallet-client",
   "_id": "bitcore-wallet-client@0.0.40",
-  "_shasum": "ddc28c722e4ee9a0ce894ba0cb9dde7cdb83889d",
-  "_resolved": "git://github.com/LedgerHQ/bitcore-wallet-client.git#5d008480f4ec3024ff1860fdab18d32961b01a3e",
+  "_shasum": "abee1f0d5be7f4bb92075b514cce9efd7f892dcf",
+  "_resolved": "git://github.com/LedgerHQ/bitcore-wallet-client.git#ab345fce4a2f56c4e9954752f4e70bffa7c1a652",
   "_from": "git://github.com/LedgerHQ/bitcore-wallet-client.git#external-hw",
   "_fromGithub": true
 }
